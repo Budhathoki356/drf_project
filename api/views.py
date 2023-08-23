@@ -1,8 +1,8 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from .models import Item, Location
 from .serializers import ItemSerializer, LocationSerializer
 
-class ItemList(generics.ListCreateAPIView):
+class ItemViewSet(viewsets.ModelViewSet):
     serializer_class = ItemSerializer
 
     def get_queryset(self):
@@ -13,15 +13,9 @@ class ItemList(generics.ListCreateAPIView):
             queryset = queryset.filter(item_location=location)
         
         return queryset
-    
-class ItemDetail(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = ItemSerializer
-    queryset = Item.objects.all()
 
-class LocationList(generics.ListCreateAPIView):
+
+class LocationViewSet(viewsets.ModelViewSet):
     serializer_class = LocationSerializer
     queryset = Location.objects.all()
 
-class LocationDetail(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = LocationSerializer
-    queryset = Location.objects.all()
