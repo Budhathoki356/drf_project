@@ -1,21 +1,32 @@
-from rest_framework import generics, viewsets
-from .models import Item, Location
-from .serializers import ItemSerializer, LocationSerializer
+from rest_framework import  viewsets
+from rest_framework.response import Response
+from .models import Book, Publisher, Author
+from .serializers import BookSerializer, PublisherSerializer, AuthorSerializer
 
-class ItemViewSet(viewsets.ModelViewSet):
-    serializer_class = ItemSerializer
+class BookViewSet(viewsets.ModelViewSet):
+    serializer_class = BookSerializer
 
     def get_queryset(self):
-        queryset = Item.objects.all()
-        location = self.request.query_params.get('location')
+        queryset = Book.objects.all()
+        title = self.request.query_params.get('book')
 
-        if location is not None:
-            queryset = queryset.filter(item_location=location)
+        if title is not None:
+            queryset = queryset.filter(title=title)
         
         return queryset
 
+class PublisherViewSet(viewsets.ModelViewSet):
+    serializer_class = PublisherSerializer
+    queryset = Publisher.objects.all()
 
-class LocationViewSet(viewsets.ModelViewSet):
-    serializer_class = LocationSerializer
-    queryset = Location.objects.all()
+    def create(self, request):
+        serializer = PublisherSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+
+class AuthorViewSet(viewsets.ModelViewSet):
+    serializer_class = AuthorSerializer
+    queryset = Author.objects.all()
 

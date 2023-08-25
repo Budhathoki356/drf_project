@@ -1,12 +1,17 @@
 from rest_framework import serializers
-from .models import Item, Location
+from .models import Book, Publisher, Author
 
-class ItemSerializer(serializers.ModelSerializer):
+class BookSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Item
+        model = Book
         fields = ('__all__')
 
-class LocationSerializer(serializers.ModelSerializer):
+class PublisherSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Location
+        model = Publisher
+        fields = ['id', 'publisher_name']
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
         fields = ('__all__')
